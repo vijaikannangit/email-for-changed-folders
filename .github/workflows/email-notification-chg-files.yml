@@ -1,0 +1,71 @@
+name: email-changed-folders-files
+#on: push
+on: workflow_dispatch
+jobs:
+  email-notification-for-changed-folders:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+
+      # Example 1
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v37
+
+      # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
+
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
+      - name: Send mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # Specify connection via URL (replaces server_address, server_port, secure,
+          # username and password)
+          #
+          # Format:
+          #
+          #  * smtp://user:password@server:port
+          #  * smtp+starttls://user:password@server:port
+          connection_url: ${{secrets.MAIL_CONNECTION}}
+          # Required mail server address if not connection_url:
+          server_address: smtp.gmail.com
+          # Server port, default 25:
+          server_port: 465
+          # Optional whether this connection use TLS (default is true if server_port is 465)
+          secure: true
+          # Optional (recommended) mail server username:
+          username: ${{secrets.MAIL_USERNAME}}
+          # Optional (recommended) mail server password:
+          password: ${{secrets.MAIL_PASSWORD}}
+          # Required mail subject:
+          subject: Github Actions job result - Change in files
+          # Required recipients' addresses:
+          to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
+          # Required sender full name (address can be skipped):
+          from: Vijai Kannan # <vijaik.nd@gmail.com>
+          # Optional plain body:
+          body: Build job of ${{github.repository}} completed successfully to list changed files!
+          # Optional HTML body read from file:
+          html_body: file://README.html
+          # Optional carbon copy recipients:
+          cc: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
+          # Optional blind carbon copy recipients:
+          bcc: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
+          # Optional recipient of the email response:
+          reply_to: vijaik.nd@gmail.com
+          # Optional Message ID this message is replying to:
+          in_reply_to: <vijaik.nd@gmail.com>
+          # Optional unsigned/invalid certificates allowance:
+          ignore_cert: true
+          # Optional converting Markdown to HTML (set content_type to text/html too):
+          convert_markdown: true
+          # Optional attachments:
+          attachments: attachments.zip,git.diff,./dist/static/*.js
+          # Optional priority: 'high', 'normal' (default) or 'low'
+          priority: low
