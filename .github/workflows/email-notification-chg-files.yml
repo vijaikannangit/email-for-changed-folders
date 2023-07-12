@@ -22,6 +22,12 @@ jobs:
             echo "$file was changed"
           done
 
+      - name: List all added files
+        run: |
+          for changedfiles in ${{ steps.changed-files.outputs.added_files }}; do
+            echo "$changedfiles was added"
+          done
+
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
         with:
@@ -50,7 +56,8 @@ jobs:
           # Required sender full name (address can be skipped):
           from: Vijai Kannan # <vijaik.nd@gmail.com>
           # Optional plain body:
-          body: Build job of ${{github.repository}} completed successfully to list changed files!. echo ${{ steps.changed-files.outputs.all_changed_files }}
+          body: Build job of ${{github.repository}} completed successfully!. List of file :- $changedfiles
+          #body: echo $changedfiles
           # Optional HTML body read from file:
           #Vijai html_body: file://README.html
           # Optional carbon copy recipients:
