@@ -22,20 +22,20 @@ jobs:
             echo "$file was changed"
           done
 
-      - name: Get changed files using a source file or list of file(s) to populate to files input and optionally specify more files.
-        id: changed-files-specific-source-file-and-specify-files
-        uses: tj-actions/changed-files@v37
-        with:
-            files_from_source_file: |
-              test/changed-files-list.txt
-            files: |
-              test.txt
+      #- name: Get changed files using a source file or list of file(s) to populate to files input and optionally specify more files.
+      #  id: changed-files-specific-source-file-and-specify-files
+      #  uses: tj-actions/changed-files@v37
+      #  with:
+      #      files_from_source_file: |
+      #        test/changed-files-list.txt
+      #      files: |
+      #        test.txt
 
-      - name: List all added files
-        run: |
-          for changedfiles in ${{ steps.changed-files.outputs.added_files }}; do
-            echo "$changedfiles was added"
-          done
+      #- name: List all added files
+      #  run: |
+      #    for changedfiles in ${{ steps.changed-files.outputs.added_files }}; do
+      #      echo "$changedfiles was added"
+      #    done
 
       - name: Send mail
         uses: dawidd6/action-send-mail@v3
@@ -69,8 +69,7 @@ jobs:
                  Build job of ${{github.repository}} completed successfully!.  
                  List of file(s) :-
                  ------------------ 
-                    echo $file.... echo "$file"
-                    echo $changedfiles.... echo "$changedfiles"
+                    echo ${{ steps.changed-files.outputs.all_changed_files }}
 
           #body: echo $changedfiles
           # Optional HTML body read from file:
