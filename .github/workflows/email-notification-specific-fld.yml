@@ -25,6 +25,12 @@ jobs:
         run: |
           echo "One or more files in the docs folder has changed."
           echo "Listed all the files that have changed: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
+  
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
 
 
     #   # Example 1
