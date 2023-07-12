@@ -13,9 +13,7 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v37
-        with:
-            separator: ","
-
+ 
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
       - name: List all changed files
@@ -23,6 +21,15 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
+
+      - name: Get changed files using a source file or list of file(s) to populate to files input and optionally specify more files.
+        id: changed-files-specific-source-file-and-specify-files
+        uses: tj-actions/changed-files@v37
+        with:
+            files_from_source_file: |
+              test/changed-files-list.txt
+            files: |
+              test.txt
 
       - name: List all added files
         run: |
@@ -60,7 +67,8 @@ jobs:
           # Optional plain body:
           body: | 
                  Build job of ${{github.repository}} completed successfully!.  
-                 List of file(s) :- 
+                 List of file(s) :-
+                 ------------------ 
                     echo $file.... echo "$file"
                     echo $changedfiles.... echo "$changedfiles"
 
@@ -81,6 +89,7 @@ jobs:
           #convert_markdown: true
           # Optional attachments:
           #attachments: attachments.zip,git.diff,./dist/static/*.js
+          attachments: test.txt
           # Optional priority: 'high', 'normal' (default) or 'low'
           #priority: low
     
