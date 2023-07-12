@@ -71,7 +71,7 @@ jobs:
           body: | 
                  Build job of ${{github.repository}} completed successfully!.  
 
-                 **Commit Comments :- ${{ github.event.head_commit.message }}**
+                 **Commit Comments :-** ${{ github.event.head_commit.message }}
 
                  List of file(s) :-
                  ------------------ 
