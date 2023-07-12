@@ -1,8 +1,8 @@
-name: email-notification-changed-folders
-#on: push
-on: workflow_dispatch
+name: email-notification-specific-changed-folders
+on: push
+#on: workflow_dispatch
 jobs:
-  email-notification-for-changed-folders:
+  email-notification-for-specific-changed-folders:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -10,20 +10,36 @@ jobs:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
           
 
-      # Example 1
-      - name: Get changed files
-        id: changed-files
+      - name: Get changed files in the docs folder
+        id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
-            separator: ","
- 
-      # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
-
-      - name: List all changed files
+            #files: docs/*.{js,html}  # Alternatively using: `docs/**` or `docs`
+            files: C:/Vijaik/Freelancing/email-changed-folders/src/feature1/*.*
+            #files_ignore: docs/static.js
+            #ignore: "**/+(.github)"
+  
+      - name: Run step if any file(s) in the docs folder change
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
+          echo "One or more files in the docs folder has changed."
+          echo "Listed all the files that have changed: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
+
+
+    #   # Example 1
+    #   - name: Get changed files
+    #     id: changed-files
+    #     uses: tj-actions/changed-files@v37
+    #     with:
+    #         separator: ","
+ 
+    #   # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
+
+    #   - name: List all changed files
+    #     run: |
+    #       for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+    #         echo "$file was changed"
+    #       done
 
       #- name: Get changed files using a source file or list of file(s) to populate to files input and optionally specify more files.
       #  id: changed-files-specific-source-file-and-specify-files
@@ -69,13 +85,15 @@ jobs:
           from: Vijai Kannan # <vijaik.nd@gmail.com>
           # Optional plain body:
           body: | 
+
                  Build job of ${{github.repository}} completed successfully!.  
 
                  Commit Comments :- ${{ github.event.head_commit.message }}
-
+                 
                  List of file(s) :-
                  ------------------ 
-                     ${{ steps.changed-files.outputs.all_changed_files }}
+
+                 ${{ steps.changed-files.outputs.all_changed_files }}
 
           #body: echo $changedfiles
           # Optional HTML body read from file:
@@ -94,7 +112,7 @@ jobs:
           #convert_markdown: true
           # Optional attachments:
           #attachments: attachments.zip,git.diff,./dist/static/*.js
-          attachments: test.txt
+          #attachments: test.txt
           # Optional priority: 'high', 'normal' (default) or 'low'
           #priority: low
     
