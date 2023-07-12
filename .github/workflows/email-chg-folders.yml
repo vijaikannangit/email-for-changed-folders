@@ -4,7 +4,6 @@ on: workflow_dispatch
 jobs:
   email-notification-for-changed-folders:
     runs-on: ubuntu-latest
-
     steps:
       - name: Get Changed Directory
         uses: Stockopedia/action-get-changed-files@v1
