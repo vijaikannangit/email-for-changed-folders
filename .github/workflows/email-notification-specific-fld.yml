@@ -15,13 +15,14 @@ jobs:
         uses: tj-actions/changed-files@v37
         with:
             #files: docs/*.{js,html}  # Alternatively using: `docs/**` or `docs`
-            files: C:/Vijaik/Freelancing/email-changed-folders/src/feature1/*.txt
+            #files: C:/Vijaik/Freelancing/email-changed-folders/src/feature1/*.*
+            files: C:\Vijaik\Freelancing\email-changed-folders\src/feature1\*.*
             #files_ignore: docs/static.js
             #ignore: "**/+(.github)"
             #separator: ","
 
       - name: Run step if any file(s) in the docs folder change
-        if: steps.changed-files-specific.outputs.any_changed == 'true'
+        #if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           echo "One or more files in the docs folder has changed."
           echo "Listed all the files that have changed: ${{ steps.changed-files-specific.outputs.all_changed_files }}"
