@@ -56,7 +56,7 @@ jobs:
           # Required sender full name (address can be skipped):
           from: Vijai Kannan # <vijaik.nd@gmail.com>
           # Optional plain body:
-          body: Build job of ${{github.repository}} completed successfully!. List of file :- $changedfiles
+          body: Build job of ${{github.repository}} completed successfully!. List of file :- echo "$changedfiles"
           #body: echo $changedfiles
           # Optional HTML body read from file:
           #Vijai html_body: file://README.html
