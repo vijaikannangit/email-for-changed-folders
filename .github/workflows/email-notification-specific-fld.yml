@@ -15,7 +15,7 @@ jobs:
         uses: tj-actions/changed-files@v37
         with:
             #files: docs/*.{js,html}  # Alternatively using: `docs/**` or `docs`
-            files: C:/Vijaik/Freelancing/email-changed-folders/src/feature1/*.*
+            files: C:/Vijaik/Freelancing/email-changed-folders/src/feature1/*.txt
             #files_ignore: docs/static.js
             #ignore: "**/+(.github)"
             #separator: ","
