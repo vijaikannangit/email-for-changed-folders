@@ -1,6 +1,6 @@
 name: email-notification-changed-folders
-on: push
-#on: workflow_dispatch
+#on: push
+on: workflow_dispatch
 jobs:
   email-notification-for-changed-folders:
     runs-on: ubuntu-latest
@@ -45,14 +45,12 @@ jobs:
           password: ${{secrets.MAIL_PASSWORD}}
           # Required mail subject:
           subject: ALV API Controllers-GitHub fol
-
-        
           # Required recipients' addresses:
-          #to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
+          to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
           # Required sender full name (address can be skipped):
-          #from: Vijai Kannan # <vijaik.nd@gmail.com>
+          from: Vijai Kannan # <vijaik.nd@gmail.com>
           # Optional plain body:
-          #body: Build job of ${{github.repository}} completed successfully to list changed files!
+          body: Build job of ${{github.repository}} completed successfully to list changed files!
           # Optional HTML body read from file:
           #Vijai html_body: file://README.html
           # Optional carbon copy recipients:
