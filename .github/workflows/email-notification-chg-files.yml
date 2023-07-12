@@ -69,7 +69,7 @@ jobs:
                  Build job of ${{github.repository}} completed successfully!.  
                  List of file(s) :-
                  ------------------ 
-                    echo ${{ steps.changed-files.outputs.all_changed_files }}
+                     ${{ steps.changed-files.outputs.all_changed_files }}
 
           #body: echo $changedfiles
           # Optional HTML body read from file:

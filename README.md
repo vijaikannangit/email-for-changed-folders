@@ -1,2 +1,2 @@
-# email-for-changed-folders-files checking
+# email-notification-for-changed-folders
 Email Notification for Post event when change in the folders
