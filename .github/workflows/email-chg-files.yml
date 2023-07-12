@@ -7,6 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          #ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
 
       # Example 1
