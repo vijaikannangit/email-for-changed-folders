@@ -1,4 +1,4 @@
-name: email-changed-folders-files
+name: email-notification-changed-folders
 #on: push
 on: workflow_dispatch
 jobs:
