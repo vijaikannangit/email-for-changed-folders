@@ -1,5 +1,10 @@
 name: Folder Listener
-on: push
+#on: push
+on:
+  push:
+    branches:
+      - main         #to be changed to master
+
 jobs:
   folder-listener:
     runs-on: ubuntu-latest
@@ -28,20 +33,11 @@ jobs:
             file_changed_html+="${file}<br />"
           done
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
-          #echo "FILES_CHANGED_HTML2=$file_changed_html" >> $GITHUB_OUTPUT           
 
       - name: Send email
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        run: |
-          file_changed_html=''
-          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
-            echo "$file was changed"
-            file_changed_html+="${file}<br />"
-          done
-          echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
-
-          uses: dawidd6/action-send-mail@v3
-          with:
+        uses: dawidd6/action-send-mail@v3
+        with:
           # Specify connection via URL (replaces server_address, server_port, secure,
           # username and password)
           #
@@ -71,7 +67,6 @@ jobs:
             <hr>
             <pre>
             ${{ steps.changed-files-specific.outputs.all_changed_files }}
-            ${{ env.FILES_CHANGED_HTML }}
             
             
             <b>Commit Comment</b>
