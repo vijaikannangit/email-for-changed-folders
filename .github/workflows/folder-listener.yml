@@ -3,7 +3,7 @@ name: Folder Listener
 on:
   push:
     branches:
-      - master         #to be changed to master
+      - main         #to be changed to master
 
 jobs:
   folder-listener:
