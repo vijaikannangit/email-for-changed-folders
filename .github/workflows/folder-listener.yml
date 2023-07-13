@@ -20,7 +20,6 @@ jobs:
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
       - name: List all changed files in ${{ env. LISTENING_FOLDER }}
-        id: list-all-changed-files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           file_changed_html=''
@@ -29,14 +28,20 @@ jobs:
             file_changed_html+="${file}<br />"
           done
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
-          echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_OUTPUT
-          echo "Github Output : ${{steps.list-all-changed-files.outputs.FILES_CHANGED_HTML}}"
-           
+          #echo "FILES_CHANGED_HTML2=$file_changed_html" >> $GITHUB_OUTPUT           
 
       - name: Send email
         if: steps.changed-files-specific.outputs.any_changed == 'true'
-        uses: dawidd6/action-send-mail@v3
-        with:
+        run: |
+          file_changed_html=''
+          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
+            echo "$file was changed"
+            file_changed_html+="${file}<br />"
+          done
+          echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
+
+          uses: dawidd6/action-send-mail@v3
+          with:
           # Specify connection via URL (replaces server_address, server_port, secure,
           # username and password)
           #
@@ -66,7 +71,7 @@ jobs:
             <hr>
             <pre>
             ${{ steps.changed-files-specific.outputs.all_changed_files }}
-            
+            ${{ env.FILES_CHANGED_HTML }}
             
             
             <b>Commit Comment</b>
