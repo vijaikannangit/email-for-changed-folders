@@ -14,7 +14,7 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
-            # separator: ","
+            separator: "\n"
             files: ${{ env. LISTENING_FOLDER }}
  
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
@@ -66,7 +66,6 @@ jobs:
             
             <b>Commit Comment</b>
             <hr>
-            
             ${{ github.event.head_commit.message }}
 
             <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
