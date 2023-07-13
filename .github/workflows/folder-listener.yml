@@ -79,7 +79,7 @@ jobs:
           # Optional carbon copy recipients:
           #cc: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
           # Optional blind carbon copy recipients:
-          #bcc: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
+          bcc: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
           # Optional recipient of the email response:
           #reply_to: vijaik.nd@gmail.com
           # Optional Message ID this message is replying to:
