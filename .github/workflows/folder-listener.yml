@@ -68,9 +68,10 @@ jobs:
             <pre>
             ${{ steps.changed-files-specific.outputs.all_changed_files }}
             
-            
+            </pre>
             <b>Commit Comment</b>
             <hr>
+            <pre>
             ${{ github.event.head_commit.message }}
 
 
