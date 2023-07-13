@@ -1,46 +1,36 @@
-name: email-notification-changed-folders
-#on: push
-on: workflow_dispatch
+name: Folder Listener
+on: push
 jobs:
-  email-notification-for-changed-folders:
+  folder-listener:
     runs-on: ubuntu-latest
+    env:
+        LISTENING_FOLDER : api/app/controllers
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
           
-
-      # Example 1
-      - name: Get changed files
-        id: changed-files
+      - name: Get changed files in ${{ env. LISTENING_FOLDER }}
+        id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
-            separator: ","
+            # separator: ","
+            files: ${{ env. LISTENING_FOLDER }}
  
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
-      - name: List all changed files
+      - name: List all changed files in ${{ env. LISTENING_FOLDER }}
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          file_changed_html=''
+          for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
+            file_changed_html+="${file}<br>"
           done
+          echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
 
-      #- name: Get changed files using a source file or list of file(s) to populate to files input and optionally specify more files.
-      #  id: changed-files-specific-source-file-and-specify-files
-      #  uses: tj-actions/changed-files@v37
-      #  with:
-      #      files_from_source_file: |
-      #        test/changed-files-list.txt
-      #      files: |
-      #        test.txt
-
-      #- name: List all added files
-      #  run: |
-      #    for changedfiles in ${{ steps.changed-files.outputs.added_files }}; do
-      #      echo "$changedfiles was added"
-      #    done
-
-      - name: Send mail
+      - name: Send email
+        if: steps.changed-files-specific.outputs.any_changed == 'true'
         uses: dawidd6/action-send-mail@v3
         with:
           # Specify connection via URL (replaces server_address, server_port, secure,
@@ -50,7 +40,6 @@ jobs:
           #
           #  * smtp://user:password@server:port
           #  * smtp+starttls://user:password@server:port
-          #connection_url: ${{secrets.MAIL_CONNECTION}}
           # Required mail server address if not connection_url:
           server_address: smtp.gmail.com
           # Server port, default 25:
@@ -58,28 +47,35 @@ jobs:
           # Optional whether this connection use TLS (default is true if server_port is 465)
           secure: true
           # Optional (recommended) mail server username:
-          username: ${{secrets.MAIL_USERNAME}}
+          username: ${{secrets.SMTP_USER}}
           # Optional (recommended) mail server password:
-          password: ${{secrets.MAIL_PASSWORD}}
+          password: ${{secrets.SMTP_PASSWORD}}
           # Required mail subject:
-          subject: ALV API Controllers-GitHub fol
+          subject: ALV API Controllers-GitHub Updated
           # Required recipients' addresses:
-          to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
+          to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com, kumvijaya@gmail.com
           # Required sender full name (address can be skipped):
-          from: Vijai Kannan # <vijaik.nd@gmail.com>
+          from:  ALVDIGITAL Systems (API)
           # Optional plain body:
-          body: | 
-                 Build job of ${{github.repository}} completed successfully!.  
+          html_body: |
+            <b>List of files changed in ${{ env.LISTENING_FOLDER }}</b>
+            <hr>
+            <pre>
+            ${{ steps.changed-files-specific.outputs.all_changed_files }}
+            
+            
+            <b>Commit Comment</b>
+            <hr>
+            
+            ${{ github.event.head_commit.message }}
 
-                 Commit Comments :- ${{ github.event.head_commit.message }}
-
-                 List of file(s) :-
-                 ------------------ 
-                     ${{ steps.changed-files.outputs.all_changed_files }}
+            <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
+            
+            </pre>
 
           #body: echo $changedfiles
           # Optional HTML body read from file:
-          #Vijai html_body: file://README.html
+          #html_body: file://README.html
           # Optional carbon copy recipients:
           #cc: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com
           # Optional blind carbon copy recipients:
@@ -91,10 +87,10 @@ jobs:
           # Optional unsigned/invalid certificates allowance:
           #ignore_cert: true
           # Optional converting Markdown to HTML (set content_type to text/html too):
-          #convert_markdown: true
+          # convert_markdown: true
           # Optional attachments:
           #attachments: attachments.zip,git.diff,./dist/static/*.js
-          attachments: test.txt
+          # attachments: test.txt
           # Optional priority: 'high', 'normal' (default) or 'low'
-          #priority: low
+          priority: high
     
