@@ -73,8 +73,8 @@ jobs:
             <hr>
             ${{ github.event.head_commit.message }}
 
-            <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
 
+            <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
             </pre>
 
           #body: echo $changedfiles
