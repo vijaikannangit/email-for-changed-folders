@@ -14,7 +14,7 @@ jobs:
         id: changed-files-specific
         uses: tj-actions/changed-files@v37
         with:
-            separator: ","
+            #separator: ","
             files: ${{ env. LISTENING_FOLDER }}
  
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
@@ -25,9 +25,10 @@ jobs:
           file_changed_html=''
           for file in ${{ steps.changed-files-specific.outputs.all_changed_files }}; do
             echo "$file was changed"
-            file_changed_html+="${file}<br>"
+            file_changed_html+="${file}<br />"
           done
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
+
 
       - name: Send email
         if: steps.changed-files-specific.outputs.any_changed == 'true'
@@ -62,6 +63,7 @@ jobs:
             <hr>
             <pre>
             ${{ steps.changed-files-specific.outputs.all_changed_files }}
+            
             
             
             <b>Commit Comment</b>
