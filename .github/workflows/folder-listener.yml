@@ -47,9 +47,9 @@ jobs:
           # Optional whether this connection use TLS (default is true if server_port is 465)
           secure: true
           # Optional (recommended) mail server username:
-          username: ${{secrets.SMTP_USER}}
+          username: ${{secrets.MAIL_USERNAME}}
           # Optional (recommended) mail server password:
-          password: ${{secrets.SMTP_PASSWORD}}
+          password: ${{secrets.MAIL_PASSWORD}}
           # Required mail subject:
           subject: ALV API Controllers-GitHub Updated
           # Required recipients' addresses:
