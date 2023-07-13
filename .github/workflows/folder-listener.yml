@@ -20,6 +20,7 @@ jobs:
       # NOTE: `since_last_remote_commit: true` is implied by default and falls back to the previous local commit.
 
       - name: List all changed files in ${{ env. LISTENING_FOLDER }}
+        id: list-all-changed-files
         if: steps.changed-files-specific.outputs.any_changed == 'true'
         run: |
           file_changed_html=''
@@ -28,7 +29,9 @@ jobs:
             file_changed_html+="${file}<br />"
           done
           echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_ENV
-
+          echo "FILES_CHANGED_HTML=$file_changed_html" >> $GITHUB_OUTPUT
+          echo "Github Output : ${{steps.list-all-changed-files.outputs.FILES_CHANGED_HTML}}"
+           
 
       - name: Send email
         if: steps.changed-files-specific.outputs.any_changed == 'true'
