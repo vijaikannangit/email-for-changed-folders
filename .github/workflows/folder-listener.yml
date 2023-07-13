@@ -53,7 +53,7 @@ jobs:
           # Required mail subject:
           subject: ALV API Controllers-GitHub Updated
           # Required recipients' addresses:
-          to: vijaik.nd@gmail.com, vishali.nagathevan@gmail.com, kumvijaya@gmail.com
+          to: vijaik.nd@gmail.com #, vishali.nagathevan@gmail.com, kumvijaya@gmail.com
           # Required sender full name (address can be skipped):
           from:  ALVDIGITAL Systems (API)
           # Optional plain body:
@@ -70,7 +70,7 @@ jobs:
             ${{ github.event.head_commit.message }}
 
             <b>This is an automated email. If you have questions about the above, please email to service@alvdigital.com</b>
-            
+
             </pre>
 
           #body: echo $changedfiles
